@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Health SOS - Emergency</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        button {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+            margin: 10px 0;
+        }
+        #status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 5px;
+            background: #f5f5f5;
+            border-left: 4px solid #ff4444;
+        }
+        .active {
+            background: #ffcccc;
+            border-left: 4px solid #ff0000;
+        }
+        #hospitalInfo {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .error-message {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<nav class="sidebar close">
+    <header>
+        <div class="image-text">
+            <span class="image">
+                <img src="@{/log.png}" alt="">
+            </span>
+            <div class="text header-text">
+                <span class="name">Alucra</span>
+                <span class="profession">Web developer</span>
+            </div>
+        </div>
+        <i class='bx bx-chevron-right toggle'></i>
+    </header>
+
+    <div class="menu-bar">
+        <div class="menu">
+            <li class="search-box">
+                <i class='bx bx-search icon'></i>
+                <input type="search" placeholder="Search">
+            </li>
+            <ul class="menu-links">
+                <li class="nav-link">
+                    <a href="/Customer/Dashboard">
+                        <i class='bx bx-home-alt icon'></i>
+                        <span class="text nav-text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-link">
+                    <a href="@{/Customer/EditProfile}">
+                        <i class='bx bx-user icon'></i>
+                        <span class="text nav-text">Edit Profile</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="bottom-content">
+            <li>
+                <a href="#">
+                    <i class='bx bx-log-out icon'></i>
+                    <span class="text nav-text">Logout</span>
+                </a>
+            </li>
+
+            <a href="">link</a>
+
+            <li class="mode">
+                <div class="moon-sun">
+                    <i class='bx bx-moon icon moon'></i>
+                    <i class='bx bx-sun icon sun'></i>
+                </div>
+
+                <span class="mode-text text">Dark Mode</span>
+                <div class="toggle-switch">
+                    <span class="switch"></span>
+                </div>
+            </li>
+        </div>
+    </div>
+</nav>
+
+<section class="home">
+    <h1>Health SOS Emergency</h1>
+    <button id="sosButton">SEND EMERGENCY SOS</button>
+    <div id="status">Status: Ready to send emergency alert</div>
+    <div id="hospitalInfo"></div>
+</section>
+<script>
+    const sosButton = document.getElementById('sosButton');
+    const statusDiv = document.getElementById('status');
+    const hospitalInfo = document.getElementById('hospitalInfo');
+    let trackingId = null;
+
+    function getLocation() {
+    return new Promise((resolve, reject) => {
+        statusDiv.textContent = "Status: Accessing your location...";
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    statusDiv.textContent = "Status: Location acquired!";
+                    resolve(position.coords);
+                },
+                error => {
+                    let errorMessage = "Error getting location: ";
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            errorMessage += "Location permission denied. Please enable location access in your browser settings.";
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            errorMessage += "Location unavailable. Check your network/GPS connection.";
+                            break;
+                        case error.TIMEOUT:
+                            errorMessage += "Location request timed out. Ensure you're in an area with good GPS/network coverage.";
+                            break;
+                        default:
+                            errorMessage += "Unknown error";
+                    }
+                    statusDiv.innerHTML = errorMessage +
+                        '<br><button onclick="window.location.reload()">Try Again</button>';
+                    reject(errorMessage);
+                },
+                {
+                    timeout: 15000, // Increase timeout to 15 seconds
+                    maximumAge: 0, // Don't use cached position
+                    enableHighAccuracy: true // Request better accuracy
+                }
+            );
+        } else {
+            const msg = "Geolocation not supported by your browser";
+            statusDiv.textContent = msg;
+            reject(msg);
+        }
+    });
+}
+
+    sosButton.addEventListener('click', async () => {
+        try {
+            statusDiv.textContent = "Status: Getting your precise location...";
+            const coords = await getLocation();
+
+            statusDiv.textContent = "Status: Finding nearest emergency hospital...";
+            sosButton.disabled = true;
+
+            const response = await fetch('http://localhost:8081/api/sos/start', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    latitude: coords.latitude,
+                    longitude: coords.longitude
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`Server responded with status ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (!data.trackingId || !data.hospital || !data.contact) {
+                throw new Error("Incomplete response from server");
+            }
+
+            // Store all data in localStorage
+            localStorage.setItem('sosData', JSON.stringify({
+                trackingId: data.trackingId,
+                hospital: data.hospital,
+                contact: data.contact,
+                hospitalLat: data.hospitalLat,
+                hospitalLng: data.hospitalLng
+            }));
+
+            // Redirect to dashboard
+            window.location.href = `/Customer/SOSDashboard?trackingId=${data.trackingId}`;
+
+        } catch (error) {
+            console.error("Error:", error);
+            statusDiv.textContent = `Error: ${error.message || error}`;
+            statusDiv.className = "error-message";
+            sosButton.disabled = false;
+
+            hospitalInfo.innerHTML = `
+                <p class="error-message">Failed to send emergency alert. Please try again.</p>
+                ${error.message ? `<p>Details: ${error.message}</p>` : ''}
+            `;
+        }
+    });
+</script>
+<script src="script.js"></script>
+</body>
+</html>

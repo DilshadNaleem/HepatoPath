@@ -77,4 +77,16 @@ public class HomeController
     {
         return "/Customer/face_enrollment";
     }
+
+    @GetMapping("/Customer/SOS")
+    public String sos()
+    {
+        return "/Customer/sos";
+    }
+
+    @GetMapping("/Customer/SOSDashboard")
+    public String SOSDashboard()
+    {
+        return "/Customer/SOSDashboard";
+    }
 }
