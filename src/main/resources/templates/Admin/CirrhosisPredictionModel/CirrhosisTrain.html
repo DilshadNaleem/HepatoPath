@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cirrhosis Model Training</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .visualization-container {
+            margin-bottom: 30px;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .visualization-title {
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .metrics-table {
+            margin-bottom: 30px;
+        }
+        .features-list {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Cirrhosis Prediction Model Training</h1>
+
+    <div th:if="${success}" class="alert alert-success mt-3">
+        <span th:text="${message}">Training completed successfully</span>
+    </div>
+
+    <div th:unless="${success}" class="alert alert-danger mt-3">
+        <span th:text="${message}">Training failed</span>
+    </div>
+
+    <form th:action="@{/Admin/Cirrhosis/train}" method="post" class="mt-4">
+        <button type="submit" class="btn btn-primary">Train Model</button>
+    </form>
+
+    <div th:if="${success}">
+        <!-- Metrics Table -->
+        <div class="metrics-table mt-4">
+            <h3>Model Performance Metrics</h3>
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                <tr>
+                    <th>Metric</th>
+                    <th>Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Accuracy</td>
+                    <td th:text="${metrics?.accuracy}">0.00</td>
+                </tr>
+                <tr>
+                    <td>Precision</td>
+                    <td th:text="${metrics?.precision}">0.00</td>
+                </tr>
+                <tr>
+                    <td>Recall</td>
+                    <td th:text="${metrics?.recall}">0.00</td>
+                </tr>
+                <tr>
+                    <td>F1 Score</td>
+                    <td th:text="${metrics?.f1}">0.00</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Selected Features -->
+        <div class="features-list">
+            <h3>Selected Features</h3>
+            <ul class="list-group">
+                <li th:each="feature : ${selectedFeatures}"
+                    th:text="${feature}"
+                    class="list-group-item">
+                    Feature
+                </li>
+            </ul>
+        </div>
+
+        <!-- Visualizations -->
+        <div class="visualization-container">
+            <h3 class="visualization-title">Feature Importance</h3>
+            <img th:src="${featureImportanceImage}" alt="Feature Importance" class="img-fluid">
+        </div>
+
+        <div class="visualization-container">
+            <h3 class="visualization-title">Confusion Matrix</h3>
+            <img th:src="${confusionMatrixImage}" alt="Confusion Matrix" class="img-fluid">
+        </div>
+
+        <div class="visualization-container">
+            <h3 class="visualization-title">ROC Curve</h3>
+            <img th:src="${rocCurveImage}" alt="ROC Curve" class="img-fluid">
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
