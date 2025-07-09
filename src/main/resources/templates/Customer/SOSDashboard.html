@@ -4,66 +4,226 @@
     <title>Hospital Dashboard - Patient Tracking</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <style>
+        :root {
+            --primary: #E74C3C; /* Vibrant red */
+            --primary-light: rgba(231, 76, 60, 0.1);
+            --secondary: #3498DB; /* Bright blue */
+            --secondary-light: rgba(52, 152, 219, 0.1);
+            --accent: #2ECC71; /* Vibrant green */
+            --accent-light: rgba(46, 204, 113, 0.1);
+            --warning: #F39C12; /* Orange */
+            --warning-light: rgba(243, 156, 18, 0.1);
+            --dark: #2C3E50; /* Dark blue */
+            --light: #ECF0F1; /* Light gray */
+            --text: #34495E; /* Dark gray-blue */
+            --text-light: #7F8C8D;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
             margin: 0;
             padding: 20px;
-            background: #f5f5f5;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+            color: var(--text);
+            min-height: 100vh;
         }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            border: 1px solid rgba(0,0,0,0.05);
         }
-        h1 { color: #d9534f; margin-top: 0; }
-        #status {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 5px;
+
+        h1 {
+            color: var(--primary);
+            margin-top: 0;
             margin-bottom: 20px;
-            border-left: 4px solid #d9534f;
+            font-size: 2.2rem;
+            font-weight: 800;
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
         }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        h2, h3 {
+            color: var(--dark);
+        }
+
+        #status {
+            background: var(--light);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 25px;
+            border-left: 5px solid var(--primary);
+            transition: var(--transition);
+        }
+
+        #status:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
         #map {
             height: 500px;
             width: 100%;
-            border-radius: 5px;
-            margin-bottom: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.1);
         }
+
         .info-panel {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
-            flex-wrap: wrap;
         }
+
         .info-card {
-            flex: 1;
-            min-width: 250px;
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 5px;
+            background: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: var(--transition);
+            border: 1px solid rgba(0,0,0,0.05);
         }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .info-card:nth-child(1) {
+            border-top: 4px solid var(--secondary);
+        }
+
+        .info-card:nth-child(2) {
+            border-top: 4px solid var(--accent);
+        }
+
+        .info-card:nth-child(3) {
+            border-top: 4px solid var(--warning);
+        }
+
         .distance-display {
-            font-size: 24px;
-            color: #d9534f;
-            font-weight: bold;
-            margin: 10px 0;
+            font-size: 28px;
+            color: var(--primary);
+            font-weight: 800;
+            margin: 15px 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
+
         .last-update {
-            color: #6c757d;
+            color: var(--text-light);
             font-size: 14px;
+            margin-top: 10px;
         }
+
         .error {
-            background: #ffeeee;
+            background: rgba(231, 76, 60, 0.1);
             padding: 15px;
-            border-radius: 5px;
-            border-left: 4px solid #ff4444;
+            border-radius: calc(var(--border-radius) / 2);
+            border-left: 4px solid var(--primary);
+            color: var(--primary);
         }
+
         .retry-link {
-            color: #d9534f;
-            font-weight: bold;
+            color: var(--secondary);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .retry-link:hover {
+            color: var(--primary);
             text-decoration: underline;
+        }
+
+        /* Custom map controls */
+        .leaflet-control {
+            border-radius: var(--border-radius) !important;
+            box-shadow: var(--box-shadow) !important;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            #map {
+                height: 400px;
+            }
+
+            .info-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 12px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                padding-bottom: 8px;
+            }
+
+            h1::after {
+                width: 80px;
+            }
+
+            #map {
+                height: 350px;
+            }
+
+            #status, .info-card {
+                padding: 15px;
+            }
+
+            .distance-display {
+                font-size: 24px;
+            }
+        }
+
+        /* Animation for distance display */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .distance-display.updating {
+            animation: pulse 0.5s ease;
         }
     </style>
 </head>

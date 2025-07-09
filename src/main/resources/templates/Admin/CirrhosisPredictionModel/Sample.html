@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cirrhosis Sample Data</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .success-message {
+            color: green;
+            font-weight: bold;
+        }
+        .error-message {
+            color: red;
+            font-weight: bold;
+        }
+        .patient-card {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+        }
+        .patient-header {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 3px;
+            margin-bottom: 10px;
+        }
+        .status-D {
+            color: #dc3545;
+        }
+        .status-C {
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-4">
+    <h1>Cirrhosis Patient Samples</h1>
+
+    <div th:if="${success}" class="alert alert-success">
+        Sample data loaded successfully
+    </div>
+
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}">
+        Error message will appear here if there's an issue
+    </div>
+
+    <div th:if="${samples != null and !samples.empty}">
+        <div class="row">
+            <div class="col-md-6" th:each="sample : ${samples}">
+                <div class="patient-card">
+                    <div class="patient-header">
+                        <h3>Patient ID: <span th:text="${sample.id}"></span></h3>
+                        <span class="status" th:classappend="${sample.Status == 'D'} ? 'status-D' : 'status-C'">
+                            Status: <span th:text="${sample.Status == 'D' ? 'Deceased' : 'Censored'}"></span>
+                        </span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Age:</strong> <span th:text="${sample.Age}"></span></p>
+                            <p><strong>Sex:</strong> <span th:text="${sample.Sex}"></span></p>
+                            <p><strong>Drug:</strong> <span th:text="${sample.Drug}"></span></p>
+                            <p><strong>Stage:</strong> <span th:text="${sample.Stage}"></span></p>
+                            <p><strong>Number of Days:</strong> <span th:text="${sample.N_Days}"> </span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Albumin:</strong> <span th:text="${sample.Albumin}"></span> g/dL</p>
+                            <p><strong>Bilirubin:</strong> <span th:text="${sample.Bilirubin}"></span> mg/dL</p>
+                            <p><strong>Platelets:</strong> <span th:text="${sample.Platelets}"></span> x10³/µL</p>
+                            <p><strong>Prothrombin:</strong> <span th:text="${sample.Prothrombin}"></span> seconds</p>
+                            <p><strong>Alk_Phos:</strong> <span th:text="${sample.Alk_Phos}"> </span></p>
+                            <p><strong>Cholestrol:</strong> <span th:text="${sample.Cholesterol}"> </span></p>
+                            <p><strong>Copper:</strong> <span th:text="${sample.Copper}"> </span></p>
+                            <p><strong>SGOT::</strong> <span th:text="${sample.SGOT}"> </span></p>
+                            <p><strong>Tryglicerides:</strong> <span th:text="${sample.Tryglicerides}"> </span></p>
+
+                        </div>
+                    </div>
+
+                    <div class="additional-info">
+                        <p><strong>Hepatomegaly:</strong> <span th:text="${sample.Hepatomegaly == 'Y' ? 'Yes' : 'No'}"></span></p>
+                        <p><strong>Spiders:</strong> <span th:text="${sample.Spiders == 'Y' ? 'Yes' : 'No'}"></span></p>
+                        <p><strong>Ascites:</strong> <span th:text="${sample.Ascites == 'Y' ? 'Yes' : 'No'}"></span></p>
+                        <p><strong>Edema:</strong>
+                            <span th:switch="${sample.Edema}">
+                                <span th:case="'Y'">Yes</span>
+                                <span th:case="'N'">No</span>
+                                <span th:case="'S'">Slight</span>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:unless="${samples != null and !samples.empty}" class="alert alert-warning">
+        No sample data available to display.
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

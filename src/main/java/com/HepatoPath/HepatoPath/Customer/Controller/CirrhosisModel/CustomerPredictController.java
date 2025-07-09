@@ -1,19 +1,23 @@
-package com.HepatoPath.HepatoPath.Admin.Controller.CirrosisModel;
+package com.HepatoPath.HepatoPath.Customer.Controller.CirrhosisModel;
 
+import com.HepatoPath.HepatoPath.Admin.Controller.CirrosisModel.AdminPredictController;
 import com.HepatoPath.HepatoPath.Admin.DTO.CirrhosisInfo;
 import com.HepatoPath.HepatoPath.Admin.DTO.PredictionResult;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
-@RequestMapping("/Admin")
-public class AdminPredictController {
-
+@RequestMapping("/Customer")
+public class CustomerPredictController
+{
     private static final Logger logger = LoggerFactory.getLogger(AdminPredictController.class);
     private static final String API_URL = "http://localhost:5000/api/cirrhosis/predict";
     private final RestTemplate restTemplate = new RestTemplate();
@@ -23,7 +27,7 @@ public class AdminPredictController {
     public String showPredictionForm(Model model) {
         logger.info("Displaying cirrhosis prediction form");
         model.addAttribute("cirrhosisInfo", new CirrhosisInfo());
-        return "Admin/CirrhosisPredictionModel/Predict";
+        return "Customer/CirrhosisPredictionModel/CustomerPredict";
     }
 
     @PostMapping("/PredictCirrhosis")
@@ -104,6 +108,6 @@ public class AdminPredictController {
             model.addAttribute("error", errorMsg);
         }
 
-        return "Admin/CirrhosisPredictionModel/Predict";
+        return "Customer/CirrhosisPredictionModel/CustomerPredict";
     }
 }

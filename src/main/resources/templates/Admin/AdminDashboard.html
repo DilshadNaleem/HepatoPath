@@ -323,20 +323,20 @@
         <section class="insights">
             <div class="sales">
                 <a href="/Admin/DiseaseModelDashboard">
-                <span class="material-symbols-sharp">trending_up</span>
-                <div class="middle">
-                    <div class="left">
-                        <h3>Total Sales</h3>
-                        <h1>$25,024</h1>
+                    <span class="material-symbols-sharp">trending_up</span>
+                    <div class="middle">
+                        <div class="left">
+                            <h3>Total Sales</h3>
+                            <h1>$25,024</h1>
+                        </div>
+                        <div class="progress">
+                            <svg>
+                                <circle r="30" cy="40" cx="40"></circle>
+                            </svg>
+                            <div class="number"><p>80%</p></div>
+                        </div>
                     </div>
-                    <div class="progress">
-                        <svg>
-                            <circle r="30" cy="40" cx="40"></circle>
-                        </svg>
-                        <div class="number"><p>80%</p></div>
-                    </div>
-                </div>
-                <small>Last 24 Hours</small>
+                    <small>Last 24 Hours</small>
                 </a>
             </div>
 
@@ -383,40 +383,7 @@
         </section>
 
         <!-- Recent Orders Table -->
-        <section class="recent_order">
-            <header>
-                <h2>Recent Orders</h2>
-                <a href="#" class="view-all">Show All</a>
-            </header>
 
-            <table>
-                <thead>
-                <tr>
-                    <th>Product Name</th>
-                    <th>Product Number</th>
-                    <th>Payments</th>
-                    <th>Status</th>
-                    <th>Details</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Mini USB</td>
-                    <td>4563</td>
-                    <td>Due</td>
-                    <td class="warning">Pending</td>
-                    <td class="primary">Details</td>
-                </tr>
-                <tr>
-                    <td>Wireless Mouse</td>
-                    <td>4564</td>
-                    <td>Paid</td>
-                    <td class="success">Completed</td>
-                    <td class="primary">Details</td>
-                </tr>
-                </tbody>
-            </table>
-        </section>
     </main>
 
     <!-- Right Sidebar -->
@@ -436,51 +403,12 @@
                     <small class="text-muted"></small>
                 </div>
                 <div class="profile-photo">
-                    <img th:src="@{adminImage}" alt="Admin profile photo"/>
+                    <img th:src="@{/Admin/Image}" alt="Admin profile photo"/>
                 </div>
             </div>
         </div>
 
-        <!-- Recent Updates Section -->
-        <section class="recent_updates">
-            <h2>Recent Updates</h2>
-            <div class="updates">
-                <div class="update">
-                    <div class="profile-photo">
-                        <img th:src="@{/images/profile-4.jpg}" alt="Babar's profile photo"/>
-                    </div>
-                    <div class="message">
-                        <p><b>Babar</b> Received his order of USB</p>
-                    </div>
-                </div>
-                <div class="update">
-                    <div class="profile-photo">
-                        <img th:src="@{/images/profile-3.jpg}" alt="Ali's profile photo"/>
-                    </div>
-                    <div class="message">
-                        <p><b>Ali</b> Received his order of USB</p>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- Sales Analytics Section -->
-        <section class="sales-analytics">
-            <h2>Sales Analytics</h2>
-            <div class="item online">
-                <div class="icon">
-                    <span class="material-symbols-sharp">shopping_cart</span>
-                </div>
-                <div class="right_text">
-                    <div class="info">
-                        <h3>Online Orders</h3>
-                        <small class="text-muted">Last seen 2 Hours</small>
-                    </div>
-                    <h5 class="danger">-17%</h5>
-                    <h3>3849</h3>
-                </div>
-            </div>
-        </section>
     </div>
 </div>
 

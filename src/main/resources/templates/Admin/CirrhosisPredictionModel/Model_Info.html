@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cirrhosis Model Information</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .card {
+            margin-bottom: 20px;
+        }
+        .metric-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .feature-list {
+            column-count: 3;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="mb-4">Cirrhosis Prediction Model Information</h1>
+
+            <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+            <div th:unless="${error}">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Model Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Model Type:</strong> <span th:text="${modelType}"></span></p>
+                        <p><strong>Last Trained:</strong>
+                            <span th:if="${lastTrained}" th:text="${#dates.format(new java.util.Date(lastTrained * 1000), 'yyyy-MM-dd HH:mm:ss')}"></span>
+                            <span th:unless="${lastTrained}">Unknown</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Model Metrics</h5>
+                    </div>
+                    <div class="card-body">
+                        <div th:if="${metrics}" th:each="metricEntry : ${metrics}">
+                            <div class="metric-item">
+                                <strong th:text="${metricEntry.key}"></strong>:
+                                <span th:text="${metricEntry.value}"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Selected Features</h5>
+                    </div>
+                    <div class="card-body">
+                        <div th:if="${selectedFeatures}" class="feature-list">
+                            <span th:each="feature : ${selectedFeatures}" th:text="${feature}" class="d-block"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Feature Names</h5>
+                    </div>
+                    <div class="card-body">
+                        <div th:if="${featureNames}" class="feature-list">
+                            <span th:each="feature : ${featureNames}" th:text="${feature}" class="d-block"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
