@@ -6,7 +6,7 @@
     <title>Face Enrollment</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+
     <style>
         :root {
             --primary: #4361ee;
@@ -264,80 +264,7 @@
 </head>
 <body>
 
-<nav class="sidebar close">
-    <header>
-        <div class="image-text">
-            <span class="image">
-                <img src="log.png" alt="">
-            </span>
 
-            <div class="text header-text">
-                <span class="name">HepatoPath</span>
-                <span class="profession">Prediction AI</span>
-            </div>
-        </div>
-
-        <i class='bx bx-chevron-right toggle'></i>
-    </header>
-
-    <div class="menu-bar">
-        <div class="menu">
-            <li class="search-box">
-                <i class='bx bx-search icon'></i>
-                <input type="search" placeholder="Search" id="searchBox">
-            </li>
-            <ul class="menu-links">
-                <li class="nav-link">
-                    <a href="/Customer/EditProfile">
-                        <i class='bx bx-user icon'></i>
-                        <span class="text nav-text">Edit profile</span>
-                    </a>
-                </li>
-
-                <li class="nav-link">
-                    <a href="/Customer/FaceEnrollment">
-                        <i class='bx bx-face icon'></i>
-                        <span class="text nav-text">Face</span>
-                    </a>
-                </li>
-                <li class="nav-link">
-                    <a href="/Customer/SOS">
-                        <i class='bx bx-first-aid icon'></i>
-                        <span class="text nav-text">SOS</span>
-                    </a>
-                </li>
-
-                <li class="nav-link">
-                    <a href="/Customer/DiseaseClassifier">
-                        <i class='bx bx-plus-medical icon'></i>
-                        <span class="text nav-text">Disease</span>
-                    </a>
-                </li>
-                <li class="nav-link">
-                    <a href="/Customer/DiseaseSymptom">
-                        <i class='bx bx-clinic icon'></i>
-                        <span class="text nav-text">Disease Symptom</span>
-                    </a>
-                </li>
-
-                <li class="nav-link">
-                    <a href="/Customer/PredictCirrhosis">
-                        <i class='bx bx-analyse icon'></i>
-                        <span class="text nav-text">Predict Cirrhosis</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div class="bottom-content">
-            <li class="">
-                <a href="#">
-                    <i class='bx bx-log-out icon'></i>
-                    <span class="text nav-text">Logout</span>
-                </a>
-            </li>
-        </div>
-    </div>
-</nav>
 
 <div class="container">
     <div class="heading">
@@ -359,7 +286,7 @@
         <button id="retry" class="btn btn-secondary">Retry</button>
         <button class="btn btn-tertiary">Skip</button>
     </div>
-    <a href="/Customer/Dashboard" class="update-link">Back</a>
+    <a href="/Admin/Dashboard" class="update-link">Back</a>
 </div>
 <script th:src="@{/Customer/script.js}"></script>
 <script>
@@ -398,7 +325,7 @@
             const formData = new FormData();
             formData.append('faceImage', blob, 'face_capture.jpg');
 
-            const response = await fetch('/Customer/EnrollFace', {
+            const response = await fetch('/Admin/EnrollFace', {
                 method: 'POST',
                 body: formData
             });
@@ -407,9 +334,9 @@
             alert(result.message);
 
             if(result.status == 'success') {
-                window.location.href = '/Customer/Dashboard';
+                window.location.href = '/Admin/Dashboard';
             } else if (result.message.includes('Session Expired')) {
-                window.location.href = '/Customer/Signing';
+                window.location.href = '/Admin/Signing';
             } else {
                 retryBtn.style.display = 'block';
             }

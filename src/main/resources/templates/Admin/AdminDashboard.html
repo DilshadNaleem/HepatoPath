@@ -265,7 +265,7 @@
     <aside>
         <div class="top">
             <div class="logo">
-                <h2>A <span class="danger">lcura</span></h2>
+                <h2>H <span class="danger">epatoPath</span></h2>
             </div>
             <div class="close" id="close_btn">
                 <span class="material-symbols-sharp">close</span>
@@ -273,28 +273,28 @@
         </div>
 
         <div class="sidebar">
-            <a href="#">
+            <a href="/Admin/Dashboard">
                 <span class="material-symbols-sharp">grid_view</span>
                 <h3>Dashboard</h3>
             </a>
-            <a href="#" class="active">
-                <span class="material-symbols-sharp">person_outline</span>
-                <h3>Customers</h3>
-            </a>
+
             <a href="/Admin/DiseaseModelDashboard">
                 <span class="material-symbols-sharp">insights</span>
-                <h3>Analytics</h3>
+                <h3>Disease Model</h3>
             </a>
+
+            <a href="/Admin/CirrhosisModelDashboard">
+                <span class="material-symbols-sharp">insights</span>
+                <h3>Cirrhosis Model</h3>
+            </a>
+
             <a th:href="@{/Admin/SOS}">
                 <span class="material-symbols-sharp">mail_outline</span>
                 <h3>Messages</h3>
                 <span class="msg_count notification-badge">0</span>
             </a>
-            <a href="#">
-                <span class="material-symbols-sharp">receipt_long</span>
-                <h3>Products</h3>
-            </a>
-            <a href="#">
+
+            <a href="/Admin/FaceEnrollment">
                 <span class="material-symbols-sharp">report_gmailerrorred</span>
                 <h3>Reports</h3>
             </a>
@@ -302,10 +302,7 @@
                 <span class="material-symbols-sharp">settings</span>
                 <h3>Settings</h3>
             </a>
-            <a href="#">
-                <span class="material-symbols-sharp">add</span>
-                <h3>Add Product</h3>
-            </a>
+
             <a href="#">
                 <span class="material-symbols-sharp">logout</span>
                 <h3>Logout</h3>
@@ -326,8 +323,8 @@
                     <span class="material-symbols-sharp">trending_up</span>
                     <div class="middle">
                         <div class="left">
-                            <h3>Total Sales</h3>
-                            <h1>$25,024</h1>
+                            <h3>Manage Disease Model</h3>
+                            <h1>ANYTIME</h1>
                         </div>
                         <div class="progress">
                             <svg>
@@ -359,11 +356,13 @@
             </div>
 
             <div class="income">
+                <a href="/Admin/CirrhosisModelDashboard">
                 <span class="material-symbols-sharp">stacked_line_chart</span>
                 <div class="middle">
+
                     <div class="left">
-                        <h3>Total Income</h3>
-                        <h1>$10,824</h1>
+                        <h3>Manage Cirrhosis Model</h3>
+                        <h1>AnyTime</h1>
                     </div>
                     <div class="progress">
                         <svg>
@@ -373,6 +372,7 @@
                     </div>
                 </div>
                 <small>Last 24 Hours</small>
+                </a>
             </div>
         </section>
 
@@ -382,7 +382,6 @@
             <div id="emergencyAlerts"></div>
         </section>
 
-        <!-- Recent Orders Table -->
 
     </main>
 
@@ -392,10 +391,7 @@
             <button id="menu_bar" aria-label="Toggle menu">
                 <span class="material-symbols-sharp">menu</span>
             </button>
-            <div class="theme-toggler">
-                <span class="material-symbols-sharp active">light_mode</span>
-                <span class="material-symbols-sharp">dark_mode</span>
-            </div>
+
             <div class="profile">
                 <div class="info">
                     <p><b th:text="${adminName}"></b></p>
@@ -407,6 +403,8 @@
                 </div>
             </div>
         </div>
+
+
 
 
     </div>
@@ -432,7 +430,7 @@
         const sideMenu = document.querySelector('aside');
         const menuBtn = document.querySelector('#menu_bar');
         const closeBtn = document.querySelector('#close_btn');
-        const themeToggler = document.querySelector('.theme-toggler');
+
 
         menuBtn.addEventListener('click', () => {
             sideMenu.style.display = "block";
@@ -442,11 +440,7 @@
             sideMenu.style.display = "none";
         });
 
-        themeToggler.addEventListener('click', () => {
-            document.body.classList.toggle('dark-theme-variables');
-            themeToggler.querySelector('span:nth-child(1)').classList.toggle('active');
-            themeToggler.querySelector('span:nth-child(2)').classList.toggle('active');
-        });
+
 
         // Connect to WebSocket
         connectWebSocket();

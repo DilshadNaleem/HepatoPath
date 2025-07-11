@@ -2,9 +2,340 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disease Classifier</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="style.css">
+    <style>
+        :root {
+            --primary-color: #4e73df;
+            --secondary-color: #f8f9fc;
+            --accent-color: #2e59d9;
+            --text-color: #5a5c69;
+            --light-gray: #f8f9fa;
+            --dark-gray: #d1d3e2;
+            --success-color: #1cc88a;
+            --warning-color: #f6c23e;
+            --danger-color: #e74a3b;
+        }
+
+        body {
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 15px;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        h1.text-center {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--dark-gray);
+            color: var(--accent-color);
+        }
+
+        .card {
+            border: none;
+            border-radius: 0.35rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            border-bottom: none;
+            border-radius: 0.35rem 0.35rem 0 0 !important;
+            padding: 1rem 1.35rem;
+        }
+
+        .card-body {
+            padding: 2rem;
+            background-color: white;
+            border-radius: 0 0 0.35rem 0.35rem;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            height: auto;
+            max-height: 300px;
+            object-fit: contain;
+            margin-bottom: 1rem;
+            border: 1px solid var(--dark-gray);
+            border-radius: 0.25rem;
+            background-color: var(--light-gray);
+        }
+
+        .preview-placeholder {
+            width: 100%;
+            height: 300px;
+            background-color: var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px dashed var(--dark-gray);
+            border-radius: 0.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .preview-placeholder i {
+            font-size: 3rem;
+            color: var(--dark-gray);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        .form-control {
+            border-radius: 0.35rem;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--dark-gray);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+        }
+
+        .result-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .text-muted {
+            color: #858796 !important;
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-tabs {
+            border-bottom: 1px solid var(--dark-gray);
+        }
+
+        .nav-tabs .nav-link {
+            color: var(--text-color);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: var(--primary-color);
+            background-color: transparent;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .nav-tabs .nav-link:hover:not(.active) {
+            color: var(--accent-color);
+            border-color: transparent;
+        }
+
+        .tab-content {
+            background-color: white;
+            padding: 1rem;
+            border: 1px solid var(--dark-gray);
+            border-top: none;
+            border-radius: 0 0 0.35rem 0.35rem;
+        }
+
+        .status-bar {
+            background-color: var(--light-gray);
+            color: var(--text-color);
+            font-size: 0.9rem;
+            text-align: center;
+            border-left: 3px solid var(--primary-color);
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            margin-top: 1rem;
+        }
+
+        .lead {
+            font-size: 1.1rem;
+            color: var(--text-color);
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem auto;
+            }
+
+            .row {
+                flex-direction: column;
+            }
+
+            .col-md-6 {
+                width: 100%;
+                margin-bottom: 1.5rem;
+            }
+
+            .card-body {
+                padding: 1.5rem;
+            }
+
+            h1.text-center {
+                font-size: 1.75rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .nav-tabs .nav-link {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            .card-body {
+                padding: 1rem;
+            }
+
+            .preview-image, .preview-placeholder {
+                max-height: 250px;
+                height: 250px;
+            }
+
+            .btn-primary {
+                padding: 0.5rem;
+                font-size: 0.8rem;
+            }
+
+            .result-text {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Animation for status bar */
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        .status-bar span {
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+    </style>
 </head>
 <body>
+
+
+<nav class="sidebar close">
+    <header>
+        <div class="image-text">
+            <span class="image">
+                <img src="log.png" alt="">
+            </span>
+
+            <div class="text header-text">
+                <span class="name">HepatoPath</span>
+                <span class="profession">Prediction AI</span>
+            </div>
+        </div>
+
+        <i class='bx bx-chevron-right toggle'></i>
+    </header>
+
+    <div class="menu-bar">
+        <div class="menu">
+            <li class="search-box">
+                <i class='bx bx-search icon'></i>
+                <input type="search" placeholder="Search" id="searchBox">
+            </li>
+            <ul class="menu-links">
+                <li class="nav-link">
+                    <a href="/Customer/EditProfile">
+                        <i class='bx bx-user icon'></i>
+                        <span class="text nav-text">Edit profile</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="/Customer/FaceEnrollment">
+                        <i class='bx bx-face icon'></i>
+                        <span class="text nav-text">Face</span>
+                    </a>
+                </li>
+                <li class="nav-link">
+                    <a href="/Customer/SOS">
+                        <i class='bx bx-first-aid icon'></i>
+                        <span class="text nav-text">SOS</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="/Customer/DiseaseClassifier">
+                        <i class='bx bx-plus-medical icon'></i>
+                        <span class="text nav-text">Disease</span>
+                    </a>
+                </li>
+                <li class="nav-link">
+                    <a href="/Customer/DiseaseSymptom">
+                        <i class='bx bx-clinic icon'></i>
+                        <span class="text nav-text">Disease Symptom</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="/Customer/PredictCirrhosis">
+                        <i class='bx bx-analyse icon'></i>
+                        <span class="text nav-text">Predict Cirrhosis</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="bottom-content">
+            <li class="">
+                <a href="#">
+                    <i class='bx bx-log-out icon'></i>
+                    <span class="text nav-text">Logout</span>
+                </a>
+            </li>
+        </div>
+    </div>
+</nav>
+
+
 <div class="container">
     <h1 class="text-center">Disease Classifier</h1>
     <div class="row">
@@ -16,15 +347,18 @@
                 <div class="card-body">
                     <form th:action="@{/Customer/DiseaseClassifier}" method="post" enctype="multipart/form-data">
                         <div class="mb-3 text-center">
+                            <!-- Show image if available from server -->
                             <img th:if="${imagePreview != null}" th:src="${imagePreview}"
                                  class="preview-image img-thumbnail" alt="Preview">
 
-                            <img th:unless="${imagePreview != null}" src="placeholder.jpg" alt="Preview"
-                                 class="preview-image img-thumbnail">
+                            <!-- Client-side preview container -->
+                            <div id="imagePreviewContainer" th:unless="${imagePreview != null}" class="preview-placeholder">
+                                <i class="fas fa-image"></i>
+                            </div>
                         </div>
 
                         <div class="mb-3">
-                            <input type="file" name="file" class="form-control" accept="image/*" required>
+                            <input type="file" id="imageUpload" name="file" class="form-control" accept="image/*" required>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Classify Disease</button>
                     </form>
@@ -45,50 +379,83 @@
 
                         <ul class="nav nav-tabs" id="infoTabs" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#details">Details</button>
+                                <button class="nav-link active" id="details-tab" data-bs-toggle="tab" data-bs-target="#details" type="button">Details</button>
                             </li>
-
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#dosage">Dosage</button>
+                                <button class="nav-link" id="dosage-tab" data-bs-toggle="tab" data-bs-target="#dosage" type="button">Dosage</button>
                             </li>
-
                         </ul>
 
-                        <div class="tab-content p-3 border border-top-0 rounded-bottom">
-                            <div class="tab-pane fade show active" id="details">
-                                <p th:text="'Disease ' + ${result.diseaseInfo.disease}"></p>
-                                <p th:text="'Description ' + ${result.diseaseInfo.description}"></p>
-                                <p th:text="'Symptoms ' + ${result.diseaseInfo.symptoms}"></p>
-                                <p th:text="'Cause ' + ${result.diseaseInfo.cause}"></p>
-                                <p th:text="'Side Effects ' + ${result.diseaseInfo.sideeffects}"></p>
-                                <p th:text="'Treatment ' + ${result.diseaseInfo.treatment}"></p>
-                                <p th:text="'Medications ' + ${result.diseaseInfo.medications}"></p>
-                                <p th:text="'Prevention ' + ${result.diseaseInfo.prevention}"></p>
-                                <p th:text="'Severity ' + ${result.diseaseInfo.severity}"></p>
-                                <p th:text="'Risk Factors ' + ${result.diseaseInfo.riskFactors}"></p>
-                                <p th:text="'Contagious ' + ${result.diseaseInfo.contagious}"></p>
-                                <p th:text="'Common Age Group ' + ${result.diseaseInfo.commonAgeGroup}"></p>
-                                <p th:text="'Duration ' + ${result.diseaseInfo.duration}"></p>
-                                <p th:text="'First Aid Advice ' + ${result.diseaseInfo.firstAidAdvice}"></p>
-                                <p th:text="'Source of Information ' + ${result.diseaseInfo.sourceOfInformation}"></p>
-
+                        <div class="tab-content" id="infoTabsContent">
+                            <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
+                                <p th:text="'Disease: ' + ${result.diseaseInfo.disease}"></p>
+                                <p th:text="'Description: ' + ${result.diseaseInfo.description}"></p>
+                                <p th:text="'Symptoms: ' + ${result.diseaseInfo.symptoms}"></p>
+                                <p th:text="'Cause: ' + ${result.diseaseInfo.cause}"></p>
+                                <p th:text="'Side Effects: ' + ${result.diseaseInfo.sideeffects}"></p>
+                                <p th:text="'Treatment: ' + ${result.diseaseInfo.treatment}"></p>
+                                <p th:text="'Medications: ' + ${result.diseaseInfo.medications}"></p>
+                                <p th:text="'Prevention: ' + ${result.diseaseInfo.prevention}"></p>
+                                <p th:text="'Severity: ' + ${result.diseaseInfo.severity}"></p>
+                                <p th:text="'Risk Factors: ' + ${result.diseaseInfo.riskFactors}"></p>
+                                <p th:text="'Contagious: ' + ${result.diseaseInfo.contagious}"></p>
+                                <p th:text="'Common Age Group: ' + ${result.diseaseInfo.commonAgeGroup}"></p>
+                                <p th:text="'Duration: ' + ${result.diseaseInfo.duration}"></p>
+                                <p th:text="'First Aid Advice: ' + ${result.diseaseInfo.firstAidAdvice}"></p>
+                                <p th:text="'Source of Information: ' + ${result.diseaseInfo.sourceOfInformation}"></p>
                             </div>
 
+                            <div class="tab-pane fade" id="dosage" role="tabpanel" aria-labelledby="dosage-tab">
+                                <!-- Dosage information would go here -->
+                                <p>Dosage information will be displayed here.</p>
+                            </div>
                         </div>
                     </div>
 
-                    <div th:unless = "${result != null}">
-                        <p class="lead">NO Disease Classified Yet</p>
+                    <div th:unless="${result != null}">
+                        <p class="lead">No Disease Classified Yet</p>
+                        <p class="text-center text-muted">Upload an image to classify the disease</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="status-bar mt-3 p-2 bf-light rounded">
+    <div class="status-bar mt-3 p-2 bg-light rounded">
         <span th:text="${status != null} ? ${status} : 'Ready'"></span>
     </div>
 </div>
+
+<script th:src="@{/Customer/script.js}"></script>
+<!-- Bootstrap JS Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Image Preview Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const fileInput = document.getElementById('imageUpload');
+        const previewContainer = document.getElementById('imagePreviewContainer');
+
+        fileInput.addEventListener('change', function(e) {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    // Create an image element
+                    const img = document.createElement('img');
+                    img.className = 'preview-image img-thumbnail';
+                    img.alt = 'Preview';
+                    img.src = e.target.result;
+
+                    // Replace the placeholder with the image
+                    previewContainer.innerHTML = '';
+                    previewContainer.appendChild(img);
+                }
+
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    });
+</script>
 </body>
 </html>

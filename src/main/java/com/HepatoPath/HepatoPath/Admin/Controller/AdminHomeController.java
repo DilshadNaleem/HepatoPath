@@ -56,4 +56,23 @@ public class AdminHomeController
     {
         return "/Admin/DiseasePredictionModel/DiseaseModelDashboard";
     }
+
+
+    @GetMapping("/Admin/CirrhosisModelDashboard")
+    public String CirrhosisModel()
+    {
+        return "/Admin/CirrhosisPredictionModel/CirrhosisDashboard";
+    }
+
+    @GetMapping("/Admin/FaceEnrollment")
+    public String enrollment()
+    {
+        return "/Admin/AdminFace_Enrollment";
+    }
+
+    @GetMapping("/Admin/FaceLogin")
+    public String update()
+    {
+        return "/Admin/Admin_face-login";
+    }
 }

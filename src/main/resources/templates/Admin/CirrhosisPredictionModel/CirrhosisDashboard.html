@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disease Model Management</title>
+    <title>Cirrhosis Model Management</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
@@ -134,12 +134,8 @@
             font-size: 0.9rem;
         }
 
-        .bg-primary {
-            background-color: var(--primary-color) !important;
-        }
-
-        .bg-success {
-            background-color: var(--success-color) !important;
+        .bg-info {
+            background-color: var(--info-color) !important;
         }
 
         .bg-warning {
@@ -152,10 +148,6 @@
 
         .bg-danger {
             background-color: var(--danger-color) !important;
-        }
-
-        .bg-info {
-            background-color: var(--info-color) !important;
         }
 
         /* Animation */
@@ -173,8 +165,6 @@
         .animate-card:nth-child(2) { animation-delay: 0.2s; }
         .animate-card:nth-child(3) { animation-delay: 0.3s; }
         .animate-card:nth-child(4) { animation-delay: 0.4s; }
-        .animate-card:nth-child(5) { animation-delay: 0.5s; }
-        .animate-card:nth-child(6) { animation-delay: 0.6s; }
 
         /* Mobile menu toggle */
         .menu-toggle {
@@ -233,15 +223,6 @@
         .sidebar::-webkit-scrollbar-thumb:hover {
             background: rgba(255, 255, 255, 0.3);
         }
-
-        /* Status indicators */
-        .status-indicator {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 8px;
-        }
     </style>
 </head>
 <body>
@@ -256,42 +237,32 @@
         <div class="col-md-3 col-lg-2 sidebar" id="sidebar">
             <div class="sidebar-header text-center">
                 <h4><i class="bi bi-heart-pulse me-2"></i>HepatoPath</h4>
-                <small class="text-muted">Disease Model</small>
+                <small class="text-muted">Cirrhosis Model</small>
             </div>
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link active" href="/Admin/CirrhosisModelDashboard">
+                    <a class="nav-link active" href="/Admin/DiseaseModelDashboard">
                         <i class="bi bi-speedometer2"></i>Dashboard
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/Admin/AddDisease">
-                        <i class="bi bi-plus-circle"></i>Add Disease
+                    <a class="nav-link" href="/Admin/PredictCirrhosis">
+                        <i class="bi bi-graph-up"></i>Predict the Model
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/Admin/diseases">
-                        <i class="bi bi-gear"></i>Manage Disease
+                    <a class="nav-link" href="/Admin/Cirrhosis/train">
+                        <i class="bi bi-cpu"></i>Train The Model
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/Admin/PredictDisease">
-                        <i class="bi bi-graph-up"></i>Predict Disease
+                    <a class="nav-link" href="/Admin/Sample">
+                        <i class="bi bi-database"></i>View Sample Data
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/train">
-                        <i class="bi bi-cpu"></i>Train Model
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/Admin/ViewAllDisease">
-                        <i class="bi bi-collection"></i>View Diseases
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/Admin/ViewAllValidations">
-                        <i class="bi bi-clipboard-check"></i>View Validation
+                    <a class="nav-link" href="/Admin/ModelInfo">
+                        <i class="bi bi-clipboard-data"></i>Model Info
                     </a>
                 </li>
                 <li class="nav-item mt-3">
@@ -307,8 +278,8 @@
             <div class="dashboard-header">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h1 class="h2">Disease Model Dashboard</h1>
-                        <p class="mb-0">Monitor and manage your disease prediction system</p>
+                        <h1 class="h2">Cirrhosis Model Dashboard</h1>
+                        <p class="mb-0">Monitor and manage your cirrhosis prediction model</p>
                     </div>
                     <div class="d-flex align-items-center">
                         <span class="badge bg-primary me-2">v2.1.0</span>
@@ -318,74 +289,50 @@
             </div>
 
             <div class="row">
-                <!-- Add Disease Card -->
-                <div class="col-md-6 col-lg-4 animate-card">
-                    <div class="card text-white bg-primary">
-                        <div class="card-body">
-                            <i class="bi bi-plus-circle card-icon"></i>
-                            <h5 class="card-title">Add Disease</h5>
-                            <p class="card-text">Add new disease information to the system</p>
-                            <a href="/Admin/AddDisease" class="stretched-link"></a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Manage Disease Card -->
-                <div class="col-md-6 col-lg-4 animate-card">
-                    <div class="card text-white bg-success">
-                        <div class="card-body">
-                            <i class="bi bi-gear card-icon"></i>
-                            <h5 class="card-title">Manage Disease</h5>
-                            <p class="card-text">Update or delete existing disease records</p>
-                            <a href="/Admin/diseases" class="stretched-link"></a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Predict Disease Card -->
-                <div class="col-md-6 col-lg-4 animate-card">
+                <!-- Predict Card -->
+                <div class="col-md-6 col-lg-3 animate-card">
                     <div class="card text-white bg-info">
                         <div class="card-body">
                             <i class="bi bi-graph-up card-icon"></i>
-                            <h5 class="card-title">Predict Disease</h5>
-                            <p class="card-text">Use the trained model to make predictions</p>
-                            <a href="/Admin/PredictDisease" class="stretched-link"></a>
+                            <h5 class="card-title">Predict Cirrhosis</h5>
+                            <p class="card-text">Use the trained model to make predictions on new patient data</p>
+                            <a href="/Admin/PredictCirrhosis" class="stretched-link"></a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Train Model Card -->
-                <div class="col-md-6 col-lg-4 animate-card">
+                <!-- Train Card -->
+                <div class="col-md-6 col-lg-3 animate-card">
                     <div class="card text-white bg-warning">
                         <div class="card-body">
                             <i class="bi bi-cpu card-icon"></i>
                             <h5 class="card-title">Train Model</h5>
-                            <p class="card-text">Retrain the model with updated dataset</p>
-                            <a href="/train" class="stretched-link"></a>
+                            <p class="card-text">Retrain the model with updated dataset for improved accuracy</p>
+                            <a href="/Admin/Cirrhosis/train" class="stretched-link"></a>
                         </div>
                     </div>
                 </div>
 
-                <!-- View Diseases Card -->
-                <div class="col-md-6 col-lg-4 animate-card">
+                <!-- Data Card -->
+                <div class="col-md-6 col-lg-3 animate-card">
                     <div class="card text-white bg-secondary">
                         <div class="card-body">
-                            <i class="bi bi-collection card-icon"></i>
-                            <h5 class="card-title">View Diseases</h5>
-                            <p class="card-text">Browse all diseases in the system</p>
-                            <a href="/Admin/ViewAllDisease" class="stretched-link"></a>
+                            <i class="bi bi-database card-icon"></i>
+                            <h5 class="card-title">View Data</h5>
+                            <p class="card-text">Explore and analyze the training dataset</p>
+                            <a href="/Admin/Sample" class="stretched-link"></a>
                         </div>
                     </div>
                 </div>
 
-                <!-- View Validation Card -->
-                <div class="col-md-6 col-lg-4 animate-card">
+                <!-- Model Info Card -->
+                <div class="col-md-6 col-lg-3 animate-card">
                     <div class="card text-white bg-danger">
                         <div class="card-body">
-                            <i class="bi bi-clipboard-check card-icon"></i>
-                            <h5 class="card-title">View Validation</h5>
-                            <p class="card-text">Check model validation results</p>
-                            <a href="/Admin/ViewAllValidations" class="stretched-link"></a>
+                            <i class="bi bi-clipboard-data card-icon"></i>
+                            <h5 class="card-title">Model Info</h5>
+                            <p class="card-text">View model performance metrics and configuration</p>
+                            <a href="/Admin/ModelInfo" class="stretched-link"></a>
                         </div>
                     </div>
                 </div>

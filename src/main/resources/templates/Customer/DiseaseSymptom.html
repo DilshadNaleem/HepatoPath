@@ -2,86 +2,290 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Disease Analyzer Results</title>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
     <style>
+        :root {
+            --primary-color: #4e73df;
+            --secondary-color: #f8f9fc;
+            --accent-color: #2e59d9;
+            --text-color: #5a5c69;
+            --light-gray: #f8f9fa;
+            --dark-gray: #d1d3e2;
+            --success-color: #1cc88a;
+            --warning-color: #f6c23e;
+            --danger-color: #e74a3b;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px auto;
-            padding: 0 20px;
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin-left: 250px; /* Account for sidebar */
+        }
+
+        .symptom-form, .results {
             max-width: 900px;
-            background-color: #f9f9f9;
+            margin: 2rem auto;
+            padding: 0 15px;
         }
+
         h1, h2 {
-            color: #2c3e50;
+            font-weight: 600;
+            color: var(--primary-color);
         }
+
+        h1 {
+            margin-bottom: 1.5rem;
+            font-size: 1.75rem;
+        }
+
         .symptom-form {
-            padding: 20px;
-            background: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            padding: 2rem;
+            background: white;
+            border-radius: 0.35rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+            margin-bottom: 2rem;
         }
+
         textarea {
             width: 100%;
-            padding: 12px;
-            margin: 12px 0;
-            border: 1px solid #ccc;
-            border-radius: 6px;
+            padding: 0.75rem 1rem;
+            margin: 1rem 0;
+            border: 1px solid var(--dark-gray);
+            border-radius: 0.35rem;
             min-height: 120px;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
         }
+
+        textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+            outline: none;
+        }
+
         button {
-            padding: 10px 20px;
-            background-color: #3498db;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary-color);
             color: white;
             border: none;
-            border-radius: 4px;
-            font-size: 16px;
+            border-radius: 0.35rem;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
+
         button:hover {
-            background-color: #2980b9;
+            background-color: var(--accent-color);
         }
-        .results {
-            margin-top: 40px;
-        }
+
         .disease-card {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            padding: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background-color: white;
+            border: none;
+            border-radius: 0.35rem;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
         }
+
         .disease-name {
-            font-size: 1.5em;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #34495e;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--accent-color);
         }
+
         .match-score {
-            color: #27ae60;
-            font-weight: bold;
-            margin-bottom: 15px;
+            color: var(--success-color);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
         }
+
         .section-title {
-            font-weight: bold;
-            color: #2c3e50;
-            margin-top: 10px;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
         }
+
         .disease-image {
-            width: 200px;
+            max-width: 100%;
             height: auto;
-            border-radius: 4px;
-            margin: 10px 5px 0 0;
+            max-height: 200px;
+            border-radius: 0.25rem;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            border: 1px solid var(--dark-gray);
         }
+
         .error {
             background-color: #ffe6e6;
-            color: #c0392b;
-            padding: 10px;
-            border-radius: 4px;
-            margin-top: 20px;
+            color: var(--danger-color);
+            padding: 1rem;
+            border-radius: 0.35rem;
+            margin: 1.5rem auto;
+            max-width: 900px;
+        }
+
+        .error h2 {
+            color: var(--danger-color);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1200px) {
+            body {
+                margin-left: 78px; /* Account for collapsed sidebar */
+            }
+        }
+
+        @media (max-width: 992px) {
+            .symptom-form, .results, .error {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                margin-left: 0;
+                padding-top: 60px; /* Account for navbar */
+            }
+
+            .symptom-form, .results, .error {
+                margin: 1rem auto;
+                padding: 1.25rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .disease-card {
+                padding: 1.5rem;
+            }
+
+            .disease-name {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .symptom-form, .results, .error {
+                padding: 1rem;
+                margin: 0.5rem auto;
+                border-radius: 0;
+            }
+
+            h1 {
+                font-size: 1.3rem;
+            }
+
+            textarea {
+                min-height: 100px;
+            }
+
+            button {
+                width: 100%;
+                padding: 0.75rem;
+            }
+
+            .disease-card {
+                padding: 1rem;
+            }
+
+            .disease-image {
+                max-width: 100%;
+                margin: 0.5rem 0;
+            }
         }
     </style>
+
+
 </head>
 <body>
+
+
+<nav class="sidebar close">
+    <header>
+        <div class="image-text">
+            <span class="image">
+                <img src="log.png" alt="">
+            </span>
+
+            <div class="text header-text">
+                <span class="name">HepatoPath</span>
+                <span class="profession">Prediction AI</span>
+            </div>
+        </div>
+
+        <i class='bx bx-chevron-right toggle'></i>
+    </header>
+
+    <div class="menu-bar">
+        <div class="menu">
+            <li class="search-box">
+                <i class='bx bx-search icon'></i>
+                <input type="search" placeholder="Search" id="searchBox">
+            </li>
+            <ul class="menu-links">
+                <li class="nav-link">
+                    <a href="/Customer/EditProfile">
+                        <i class='bx bx-user icon'></i>
+                        <span class="text nav-text">Edit profile</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="/Customer/FaceEnrollment">
+                        <i class='bx bx-face icon'></i>
+                        <span class="text nav-text">Face</span>
+                    </a>
+                </li>
+                <li class="nav-link">
+                    <a href="/Customer/SOS">
+                        <i class='bx bx-first-aid icon'></i>
+                        <span class="text nav-text">SOS</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="/Customer/DiseaseClassifier">
+                        <i class='bx bx-plus-medical icon'></i>
+                        <span class="text nav-text">Disease</span>
+                    </a>
+                </li>
+                <li class="nav-link">
+                    <a href="/Customer/DiseaseSymptom">
+                        <i class='bx bx-clinic icon'></i>
+                        <span class="text nav-text">Disease Symptom</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a href="/Customer/PredictCirrhosis">
+                        <i class='bx bx-analyse icon'></i>
+                        <span class="text nav-text">Predict Cirrhosis</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="bottom-content">
+            <li class="">
+                <a href="#">
+                    <i class='bx bx-log-out icon'></i>
+                    <span class="text nav-text">Logout</span>
+                </a>
+            </li>
+        </div>
+    </div>
+</nav>
+
 
 <div class="symptom-form">
     <h1>Disease Analyzer From Symptoms</h1>
@@ -164,6 +368,6 @@
     <h2>Error</h2>
     <p th:text="${error}"></p>
 </div>
-
+<script th:src="@{/Customer/script.js}"></script>
 </body>
 </html>

@@ -48,12 +48,12 @@ public class SymptomWebController
 
             } else {
                 model.addAttribute("error", "No matching disease found or error occurred.");
-                return "errorPage";
+                return "/Customer/DiseaseSymptom";
             }
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("error", "Internal server error: " + e.getMessage());
-            return "errorPage";
+            return "/Customer/DiseaseSymptom";
         }
     }
 }
