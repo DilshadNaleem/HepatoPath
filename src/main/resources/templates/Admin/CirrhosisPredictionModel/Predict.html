@@ -12,6 +12,21 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <style>
 
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            padding: 10px 25px;
+            font-weight: 500;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
         :root {
            --clr-primary: #4361ee;
            --clr-primary-light: #3a86ff;
@@ -520,6 +535,7 @@
             </div>
 
             <button type="submit" class="btn btn-primary">Predict</button>
+            <button type="button" id="loadSampleBtn" class="btn btn-secondary me-2">Load Sample Data</button>
         </form>
     </div>
 
@@ -582,6 +598,59 @@
                 sideMenu.classList.contains('active')) {
                 sideMenu.classList.remove('active');
             }
+        });
+    });
+
+     document.addEventListener('DOMContentLoaded', function() {
+        // Your existing DOMContentLoaded code
+
+        // Add event listener for Load Sample button
+        document.getElementById('loadSampleBtn').addEventListener('click', function() {
+            const sampleData = {
+                "Age": 58,
+                "Albumin": 2.8,
+                "Alk_Phos": 1980,
+                "Ascites": "Y",
+                "Bilirubin": 5.2,
+                "Cholesterol": 180,
+                "Copper": 156,
+                "Drug": "Placebo",
+                "Edema": "Y",
+                "Hepatomegaly": "Y",
+                "N_Days": 1450,
+                "Platelets": 120,
+                "Prothrombin": 12.5,
+                "SGOT": 135,
+                "Sex": "F",
+                "Spiders": "Y",
+                "Stage": 4,
+                "Tryglicerides": 85,
+                "id": 1
+            };
+
+            // Populate the form fields with sample data
+            document.getElementById('id').value = sampleData.id;
+            document.getElementById('nDays').value = sampleData.N_Days;
+            document.getElementById('age').value = sampleData.Age;
+            document.getElementById('bilirubin').value = sampleData.Bilirubin;
+            document.getElementById('cholesterol').value = sampleData.Cholesterol;
+            document.getElementById('albumin').value = sampleData.Albumin;
+            document.getElementById('copper').value = sampleData.Copper;
+            document.getElementById('alkPhos').value = sampleData.Alk_Phos;
+            document.getElementById('sgot').value = sampleData.SGOT;
+            document.getElementById('tryglicerides').value = sampleData.Tryglicerides;
+            document.getElementById('platelets').value = sampleData.Platelets;
+            document.getElementById('prothrombin').value = sampleData.Prothrombin;
+            document.getElementById('stage').value = sampleData.Stage;
+            document.getElementById('drug').value = sampleData.Drug;
+            document.getElementById('sex').value = sampleData.Sex;
+            document.getElementById('ascites').value = sampleData.Ascites;
+            document.getElementById('hepatomegaly').value = sampleData.Hepatomegaly;
+            document.getElementById('spiders').value = sampleData.Spiders;
+            document.getElementById('edema').value = sampleData.Edema;
+
+            // Show a success message
+            alert('Sample data loaded successfully!');
         });
     });
 </script>

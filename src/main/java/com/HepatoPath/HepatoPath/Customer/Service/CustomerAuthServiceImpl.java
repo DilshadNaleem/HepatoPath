@@ -72,7 +72,7 @@ public class CustomerAuthServiceImpl implements CustomerAuthService
                 return ResponseEntity.badRequest().body("Passwords dont match");
             }
 
-            Customer existingCustomer = customerRepository.findByEmail(request.getEmail().toLowerCase().trim());
+            Customer existingCustomer = customerRepository.findByEmailAndStatus(request.getEmail().toLowerCase().trim(),1);
             if (existingCustomer != null)
             {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)

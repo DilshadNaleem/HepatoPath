@@ -5,427 +5,37 @@
     <title>Disease Information Form</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
     <style>
-
-        :root {
-            --clr-primary: #4361ee;
-            --clr-primary-light: #3a86ff;
-            --clr-danger: #ef233c;
-            --clr-danger-light: #ff758f;
-            --clr-success: #2ecc71;
-            --clr-warning: #ff9f1c;
-            --clr-white: #ffffff;
-            --clr-light: #f8f9fa;
-            --clr-gray: #adb5bd;
-            --clr-dark: #212529;
-            --clr-dark-variant: #495057;
-            --clr-background: #f6f6f9;
-            --card-border-radius: 12px;
-            --border-radius-1: 8px;
-            --border-radius-2: 4px;
-            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
-        }
-
-        /* Sidebar Styles */
-        .sidebar-container {
-            width: 280px;
-            height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
-            background: var(--clr-white);
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            transition: var(--transition);
-        }
-
-        .sidebar-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1.5rem;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .sidebar-logo h2 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin: 0;
-            color: var(--clr-dark);
-        }
-
-        .sidebar-logo .danger {
-            color: var(--clr-danger);
-        }
-
-        .sidebar-close-btn {
-            display: none;
-            cursor: pointer;
-            color: var(--clr-dark);
-        }
-
-        .sidebar-menu {
-            padding: 1rem 0;
-            height: calc(100vh - 5rem);
-            overflow-y: auto;
-        }
-
-        .sidebar-menu a {
-            display: flex;
-            align-items: center;
-            padding: 0.75rem 1.5rem;
-            color: var(--clr-dark-variant);
-            text-decoration: none;
-            transition: var(--transition);
-            margin: 0.25rem 0;
-            border-left: 3px solid transparent;
-        }
-
-        .sidebar-menu a:hover {
-            background-color: rgba(67, 97, 238, 0.05);
-            color: var(--clr-primary);
-        }
-
-        .sidebar-menu a.active {
-            background-color: rgba(67, 97, 238, 0.1);
-            color: var(--clr-primary);
-            border-left: 3px solid var(--clr-primary);
-        }
-
-        .sidebar-menu a span {
-            margin-right: 1rem;
-            font-size: 1.25rem;
-        }
-
-        .sidebar-menu h3 {
-            font-size: 1rem;
-            font-weight: 500;
-            margin: 0;
-        }
-
-        .sidebar-menu .notification-badge {
-            background-color: var(--clr-danger);
-            color: var(--clr-white);
-            padding: 0.25rem 0.5rem;
-            font-size: 0.75rem;
-            border-radius: 50px;
-            margin-left: auto;
-        }
-
-        .sidebar-menu .logout-btn {
-            position: absolute;
-            bottom: 1rem;
-            width: 100%;
-            color: var(--clr-danger);
-        }
-
-        .sidebar-menu .logout-btn:hover {
-            background-color: rgba(239, 35, 60, 0.05);
-        }
-
-        /* Mobile Menu Toggle */
-        .menu-toggle-btn {
-            display: none;
-            position: fixed;
-            top: 1.5rem;
-            left: 1.5rem;
-            z-index: 999;
-            background: var(--clr-white);
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .menu-toggle-btn:hover {
-            background-color: var(--clr-light);
-        }
-
-        @media screen and (max-width: 1200px) {
-            .sidebar-container {
-                left: -280px;
-            }
-
-            .sidebar-container.active {
-                left: 0;
-            }
-
-            .menu-toggle-btn {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-
-            .sidebar-close-btn {
-                display: block;
-            }
-        }
-
-        /* Main Content Styles (for demo purposes) */
-        .main-content {
-            margin-left: 280px;
-            padding: 2rem;
-            transition: var(--transition);
-        }
-
-        @media screen and (max-width: 1200px) {
-            .main-content {
-                margin-left: 0;
-                padding: 1rem;
-            }
-        }
-
-        /* Base Styles */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-        }
-
-        .container {
-            padding: 15px;
-        }
-
-        h2 {
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            color: #2c3e50;
-        }
-
-        /* Form Section Styling */
-        .form-section {
-            margin-bottom: 1.5rem;
-            padding: 1.25rem;
-            background-color: #f8f9fa;
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .section-title {
-            font-size: 1.25rem;
-            font-weight: 500;
-            margin-bottom: 1.25rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid #dee2e6;
-            color: #3498db;
-        }
-
-        /* Required Field Indicator */
         .required-field::after {
             content: " *";
-            color: #e74c3c;
+            color: red;
         }
-
-        /* Form Controls */
-        .form-control, .form-select {
-            border-radius: 0.375rem;
-            padding: 0.5rem 0.75rem;
-            border: 1px solid #ced4da;
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-        }
-
-        .form-control:focus, .form-select:focus {
-            border-color: #86b7fe;
-            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-        }
-
-        textarea.form-control {
-            min-height: 100px;
-        }
-
-        /* Image Preview Styling */
         .image-preview {
-            max-width: 80px;
-            max-height: 80px;
-            margin-right: 8px;
-            margin-bottom: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            object-fit: cover;
+            max-width: 100px;
+            max-height: 100px;
+            margin-right: 10px;
+            margin-bottom: 10px;
         }
-
         .preview-container {
             display: flex;
             flex-wrap: wrap;
             margin-top: 10px;
-            gap: 8px;
         }
-
-        /* Submit Button */
-        .btn-primary {
-            background-color: #3498db;
-            border-color: #3498db;
-            padding: 0.75rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
+        .form-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background-color: #f8f9fa;
+            border-radius: 0.5rem;
         }
-
-        .btn-primary:hover {
-            background-color: #2980b9;
-            border-color: #2980b9;
-            transform: translateY(-1px);
-        }
-
-        /* Validation Styles */
-        .is-invalid {
-            border-color: #e74c3c !important;
-        }
-
-        .invalid-feedback {
-            color: #e74c3c;
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 767.98px) {
-            .container {
-                padding: 10px;
-            }
-
-            h2 {
-                font-size: 1.5rem;
-                margin-bottom: 1.25rem;
-            }
-
-            .form-section {
-                padding: 1rem;
-                margin-bottom: 1.25rem;
-            }
-
-            .section-title {
-                font-size: 1.1rem;
-            }
-
-            .row {
-                margin-bottom: 0;
-            }
-
-            .row > div {
-                margin-bottom: 1rem;
-            }
-
-            textarea.form-control {
-                min-height: 80px;
-            }
-
-            .btn-primary {
-                width: 100%;
-            }
-
-            .image-preview {
-                max-width: 60px;
-                max-height: 60px;
-            }
-        }
-
-        @media (max-width: 575.98px) {
-            .container {
-                padding: 8px;
-            }
-
-            h2 {
-                font-size: 1.3rem;
-            }
-
-            .form-section {
-                padding: 0.75rem;
-            }
-
-            .form-control, .form-select {
-                padding: 0.4rem 0.6rem;
-                font-size: 0.9rem;
-            }
-
-            .image-preview {
-                max-width: 50px;
-                max-height: 50px;
-            }
-        }
-
-        /* Print Styles */
-        @media print {
-            .container {
-                padding: 0;
-            }
-
-            .form-section {
-                page-break-inside: avoid;
-                border: 1px solid #ddd;
-                background-color: white;
-            }
-
-            .btn-primary, input[type="file"] {
-                display: none !important;
-            }
+        .section-title {
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #dee2e6;
         }
     </style>
-
 </head>
 <body>
 
-
-<!-- Sidebar Navigation -->
-<aside class="sidebar-container">
-    <div class="sidebar-top">
-        <div class="sidebar-logo">
-            <h2>H <span class="danger">epatoPath</span></h2>
-        </div>
-        <div class="sidebar-close-btn" id="close_btn">
-            <span class="material-symbols-sharp">close</span>
-        </div>
-    </div>
-
-    <div class="sidebar-menu">
-        <a href="/Admin/Dashboard">
-            <span class="material-symbols-sharp">grid_view</span>
-            <h3>Dashboard</h3>
-        </a>
-
-        <a href="/Admin/DiseaseModelDashboard">
-            <span class="material-symbols-sharp">insights</span>
-            <h3>Disease Model</h3>
-        </a>
-
-        <a href="/Admin/CirrhosisModelDashboard">
-            <span class="material-symbols-sharp">insights</span>
-            <h3>Cirrhosis Model</h3>
-        </a>
-
-        <a href="/Admin/SOS" class="active">
-            <span class="material-symbols-sharp">mail_outline</span>
-            <h3>Messages</h3>
-        </a>
-
-        <a href="/Admin/reports">
-            <span class="material-symbols-sharp">report_gmailerrorred</span>
-            <h3>Reports</h3>
-        </a>
-        <a href="/Admin/settings">
-            <span class="material-symbols-sharp">settings</span>
-            <h3>Settings</h3>
-        </a>
-
-        <a href="/logout" class="logout-btn">
-            <span class="material-symbols-sharp">logout</span>
-            <h3>Logout</h3>
-        </a>
-    </div>
-</aside>
-
-
-<!-- Mobile menu toggle button -->
-<button class="menu-toggle-btn" id="menu_toggle">
-    <span class="material-symbols-sharp">menu</span>
-</button>
-
-<main class="main-content">
 <div class="container mt-5">
     <h2 class="mb-4">Disease Information</h2>
     <form id="diseaseForm" th:action="@{/Admin/addDisease}" th:object="${diseaseInfo}" method="post" enctype="multipart/form-data">
@@ -565,165 +175,246 @@
         </div>
     </form>
 </div>
-</main>
-
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-
     document.addEventListener('DOMContentLoaded', function() {
-           const sideMenu = document.querySelector('.sidebar-container');
-           const menuBtn = document.getElementById('menu_toggle');
-           const closeBtn = document.getElementById('close_btn');
+     const form = document.getElementById('diseaseForm');
+     const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB in bytes
+     const MAX_TOTAL_SIZE = 150 * 1024 * 1024; // 150MB in bytes
 
-           // Toggle sidebar on menu button click
-           menuBtn.addEventListener('click', () => {
-               sideMenu.classList.add('active');
-           });
+     // Image preview functionality
+     document.getElementById('trainImages').addEventListener('change', function(e) {
+         displayPreview(this.files, 'trainPreview');
+     });
 
-           // Close sidebar on close button click
-           closeBtn.addEventListener('click', () => {
-               sideMenu.classList.remove('active');
-           });
+     document.getElementById('valImages').addEventListener('change', function(e) {
+         displayPreview(this.files, 'valPreview');
+     });
 
-           // Set active link based on current page
-           const currentPath = window.location.pathname;
-           const navLinks = document.querySelectorAll('.sidebar-menu a');
+     function displayPreview(files, previewId) {
+         const previewContainer = document.getElementById(previewId);
+         previewContainer.innerHTML = '';
 
-           navLinks.forEach(link => {
-               if (link.getAttribute('href') === currentPath) {
-                   link.classList.add('active');
-               }
-           });
+         if (files) {
+             Array.from(files).forEach(file => {
+                 if (file.type.match('image.*')) {
+                     const reader = new FileReader();
+                     reader.onload = function(e) {
+                         const previewDiv = document.createElement('div');
+                         previewDiv.className = 'position-relative d-inline-block me-2 mb-2';
 
-           // Close sidebar when clicking outside (optional)
-           document.addEventListener('click', (event) => {
-               if (!sideMenu.contains(event.target) &&
-                   event.target !== menuBtn &&
-                   sideMenu.classList.contains('active')) {
-                   sideMenu.classList.remove('active');
-               }
-           });
-       });
-   document.addEventListener('DOMContentLoaded', function() {
-       const form = document.getElementById('diseaseForm');
+                         const img = document.createElement('img');
+                         img.src = e.target.result;
+                         img.className = 'image-preview rounded border';
+                         img.title = file.name;
 
-       // Image preview functionality
-       document.getElementById('trainImages').addEventListener('change', function(e) {
-           displayPreview(this.files, 'trainPreview');
-       });
+                         const badge = document.createElement('span');
+                         badge.className = 'position-absolute top-0 start-100 translate-middle badge bg-secondary';
+                         badge.textContent = formatFileSize(file.size);
 
-       document.getElementById('valImages').addEventListener('change', function(e) {
-           displayPreview(this.files, 'valPreview');
-       });
+                         previewDiv.appendChild(img);
+                         previewDiv.appendChild(badge);
+                         previewContainer.appendChild(previewDiv);
+                     }
+                     reader.readAsDataURL(file);
+                 }
+             });
+         }
+     }
 
-       function displayPreview(files, previewId) {
-           const previewContainer = document.getElementById(previewId);
-           previewContainer.innerHTML = '';
+     function formatFileSize(bytes) {
+         if (bytes === 0) return '0 Bytes';
+         const k = 1024;
+         const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+         const i = Math.floor(Math.log(bytes) / Math.log(k));
+         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+     }
 
-           if (files) {
-               Array.from(files).forEach(file => {
-                   if (file.type.match('image.*')) {
-                       const reader = new FileReader();
-                       reader.onload = function(e) {
-                           const img = document.createElement('img');
-                           img.src = e.target.result;
-                           img.classList.add('image-preview');
-                           img.title = file.name;
-                           previewContainer.appendChild(img);
-                       }
-                       reader.readAsDataURL(file);
-                   }
-               });
-           }
-       }
+     function validateFiles() {
+         const trainFiles = document.getElementById('trainImages').files;
+         const valFiles = document.getElementById('valImages').files;
+         let totalSize = 0;
+         let errorMessage = '';
 
-       form.addEventListener('submit', function(e) {
-           e.preventDefault();
+         // Check individual file sizes
+         if (trainFiles) {
+             for (let i = 0; i < trainFiles.length; i++) {
+                 if (trainFiles[i].size > MAX_FILE_SIZE) {
+                     errorMessage = `Training image "${trainFiles[i].name}" exceeds maximum file size of 50MB`;
+                     return { valid: false, message: errorMessage };
+                 }
+                 totalSize += trainFiles[i].size;
+             }
+         }
 
-           // Validate required fields
-           const requiredFields = form.querySelectorAll('[required]');
-           let isValid = true;
+         if (valFiles) {
+             for (let i = 0; i < valFiles.length; i++) {
+                 if (valFiles[i].size > MAX_FILE_SIZE) {
+                     errorMessage = `Validation image "${valFiles[i].name}" exceeds maximum file size of 50MB`;
+                     return { valid: false, message: errorMessage };
+                 }
+                 totalSize += valFiles[i].size;
+             }
+         }
 
-           requiredFields.forEach(field => {
-               if (!field.value.trim()) {
-                   field.classList.add('is-invalid');
-                   isValid = false;
-               } else {
-                   field.classList.remove('is-invalid');
-               }
-           });
+         // Check total size
+         if (totalSize > MAX_TOTAL_SIZE) {
+             errorMessage = `Total upload size (${formatFileSize(totalSize)}) exceeds maximum limit of 150MB`;
+             return { valid: false, message: errorMessage };
+         }
 
-           if (!isValid) {
-               Swal.fire({
-                   icon: 'error',
-                   title: 'Validation Error',
-                   text: 'Please fill in all required fields',
-                   confirmButtonText: 'OK'
-               });
-               return;
-           }
+         return { valid: true };
+     }
 
-           // Show loading indicator
-           Swal.fire({
-               title: 'Processing...',
-               allowOutsideClick: false,
-               didOpen: () => {
-                   Swal.showLoading();
-               }
-           });
+     form.addEventListener('submit', function(e) {
+         e.preventDefault();
 
-           // Create FormData
-           const formData = new FormData(form);
+         // Reset previous validation
+         form.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
 
-           // Submit form data
-           fetch(form.action, {
-               method: 'POST',
-               body: formData
-           })
-           .then(response => {
-               if (!response.ok) {
-                   return response.json().then(err => {
-                       throw new Error(err.message || 'Server error occurred');
-                   });
-               }
-               return response.json();
-           })
-           .then(data => {
-               Swal.fire({
-                   icon: data.status === 'success' ? 'success' : 'error',
-                   title: data.status === 'success' ? 'Success!' : 'Error!',
-                   text: data.message,
-                   confirmButtonText: 'OK'
-               }).then(() => {
-                   if (data.status === 'success') {
-                       form.reset();
-                       document.getElementById('trainPreview').innerHTML = '';
-                       document.getElementById('valPreview').innerHTML = '';
-                   }
-               });
-           })
-           .catch(error => {
-               console.error('Error:', error);
-               Swal.fire({
-                   icon: 'error',
-                   title: 'Error!',
-                   text: error.message || 'Failed to submit form',
-                   confirmButtonText: 'OK'
-               });
-           });
-       });
+         // Validate required fields
+         const requiredFields = form.querySelectorAll('[required]');
+         let isValid = true;
 
-       // Clear validation errors when user starts typing
-       form.querySelectorAll('[required]').forEach(field => {
-           field.addEventListener('input', function() {
-               if (this.value.trim()) {
-                   this.classList.remove('is-invalid');
-               }
-           });
-       });
-   });
+         requiredFields.forEach(field => {
+             if (!field.value.trim()) {
+                 field.classList.add('is-invalid');
+                 isValid = false;
+             }
+         });
+
+         if (!isValid) {
+             Swal.fire({
+                 icon: 'error',
+                 title: 'Validation Error',
+                 text: 'Please fill in all required fields marked with *',
+                 confirmButtonText: 'OK'
+             });
+             return;
+         }
+
+         // Validate files
+         const fileValidation = validateFiles();
+         if (!fileValidation.valid) {
+             Swal.fire({
+                 icon: 'error',
+                 title: 'File Upload Error',
+                 text: fileValidation.message,
+                 confirmButtonText: 'OK'
+             });
+             return;
+         }
+
+         // Show loading indicator
+         const swalInstance = Swal.fire({
+             title: 'Processing...',
+             allowOutsideClick: false,
+             didOpen: () => {
+                 Swal.showLoading();
+             }
+         });
+
+         // Create FormData and append all form fields
+         const formData = new FormData(form);
+
+         // Append all text fields explicitly to ensure they're included
+         const formElements = form.elements;
+         for (let i = 0; i < formElements.length; i++) {
+             const element = formElements[i];
+             if (element.name && !['trainImages', 'valImages'].includes(element.name)) {
+                 formData.append(element.name, element.value);
+             }
+         }
+
+         // Submit form data with timeout handling
+         const controller = new AbortController();
+         const timeoutId = setTimeout(() => controller.abort(), 300000); // 5 minute timeout
+
+         fetch(form.action, {
+             method: 'POST',
+             body: formData,
+             signal: controller.signal
+         })
+         .then(async response => {
+             clearTimeout(timeoutId);
+
+             if (!response.ok) {
+                 const errorData = await response.json().catch(() => ({}));
+                 throw new Error(errorData.message || `Server error: ${response.status}`);
+             }
+             return response.json();
+         })
+         .then(data => {
+             swalInstance.close();
+
+             Swal.fire({
+                 icon: data.status === 'success' ? 'success' : 'error',
+                 title: data.status === 'success' ? 'Success!' : 'Error!',
+                 text: data.message,
+                 confirmButtonText: 'OK',
+                 willClose: () => {
+                     if (data.status === 'success') {
+                         form.reset();
+                         document.getElementById('trainPreview').innerHTML = '';
+                         document.getElementById('valPreview').innerHTML = '';
+                     }
+                 }
+             });
+         })
+         .catch(error => {
+             clearTimeout(timeoutId);
+             swalInstance.close();
+
+             console.error('Error:', error);
+             Swal.fire({
+                 icon: 'error',
+                 title: 'Error!',
+                 text: error.message || 'Failed to submit form. Please try again.',
+                 confirmButtonText: 'OK'
+             });
+         });
+     });
+
+     // Clear validation errors when user starts typing
+     form.querySelectorAll('[required]').forEach(field => {
+         field.addEventListener('input', function() {
+             if (this.value.trim()) {
+                 this.classList.remove('is-invalid');
+             }
+         });
+     });
+
+     // Add file size validation on change
+     document.getElementById('trainImages').addEventListener('change', function() {
+         const validation = validateFiles();
+         if (!validation.valid) {
+             Swal.fire({
+                 icon: 'warning',
+                 title: 'File Size Warning',
+                 text: validation.message,
+                 confirmButtonText: 'OK'
+             });
+             this.value = ''; // Clear the input
+             document.getElementById('trainPreview').innerHTML = '';
+         }
+     });
+
+     document.getElementById('valImages').addEventListener('change', function() {
+         const validation = validateFiles();
+         if (!validation.valid) {
+             Swal.fire({
+                 icon: 'warning',
+                 title: 'File Size Warning',
+                 text: validation.message,
+                 confirmButtonText: 'OK'
+             });
+             this.value = ''; // Clear the input
+             document.getElementById('valPreview').innerHTML = '';
+         }
+     });
+ });
 </script>
 </body>
 </html>

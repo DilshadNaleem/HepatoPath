@@ -3,6 +3,8 @@ package com.HepatoPath.HepatoPath.Customer.Controller;
 import com.HepatoPath.HepatoPath.Customer.Service.Interfaces.CustomerAuthService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,12 +17,11 @@ import java.io.PrintWriter;
 
 @Controller
 @RequestMapping("/")
-public class VerifyOTPController
-{
+public class VerifyOTPController {
+    private static final Logger logger = LoggerFactory.getLogger(VerifyOTPController.class);
     private final CustomerAuthService customerAuthService;
 
-    public VerifyOTPController(CustomerAuthService customerAuthService)
-    {
+    public VerifyOTPController(CustomerAuthService customerAuthService) {
         this.customerAuthService = customerAuthService;
     }
 
@@ -30,32 +31,32 @@ public class VerifyOTPController
             HttpSession session,
             HttpServletResponse response
     ) throws IOException {
+        logger.info("OTP verification request received for OTP: {}", otp);
         response.setContentType("text/html");
         response.setStatus(HttpServletResponse.SC_OK);
 
         try (PrintWriter out = response.getWriter()) {
             out.println("<html><body><script type='text/javascript'>");
 
+            logger.debug("Starting OTP verification process...");
             ResponseEntity<String> verificationResult = customerAuthService.verifyOtp(otp, session);
-            String message;
-            String redirectUrl;
 
             if (verificationResult.getStatusCode() == HttpStatus.OK) {
-                message = "Account verified successfully! Please login.";
-                redirectUrl = "'/Customer/Signing.html'";
+                logger.info("OTP verification successful for session: {}", session.getId());
+                out.println("alert('Account verified successfully! Please login.');");
+                out.println("window.location.href = '/Customer/Signing';");
             } else {
-                message = verificationResult.getBody() != null ?
-                        verificationResult.getBody() : "Account verification failed. Please try again.";
-                redirectUrl = "'/Customer/verification'";
+                String errorMessage = verificationResult.getBody() != null ?
+                        verificationResult.getBody().replace("'", "\\'") :
+                        "Account verification failed. Please try again.";
+                logger.warn("OTP verification failed for session: {}. Reason: {}", session.getId(), errorMessage);
+                out.println("alert('" + errorMessage + "');");
+                out.println("window.location.href = '/Customer/verification';");
             }
-
-            // Escape JavaScript strings
-            message = message.replace("'", "\\'");
-            out.println("alert('" + message + "');");
-            out.println("window.location.href = " + redirectUrl + ";");
 
             out.println("</script></body></html>");
         } catch (Exception e) {
+            logger.error("Exception occurred during OTP verification for session: {}", session.getId(), e);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             try (PrintWriter out = response.getWriter()) {
                 out.println("<html><body><script type='text/javascript'>");

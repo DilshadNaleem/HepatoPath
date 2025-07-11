@@ -16,10 +16,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+
 @Controller
 @RequestMapping("/Admin")
-public class AddDiseaseController
-{
+public class AddDiseaseController {
     private static final Logger logger = LoggerFactory.getLogger(AddDiseaseController.class);
     private final String apiUrl = "http://localhost:5000/api/disease";
     private final RestTemplate restTemplate;
@@ -40,6 +40,9 @@ public class AddDiseaseController
             @ModelAttribute DiseaseInfo diseaseInfo,
             @RequestParam(value = "trainImages", required = false) MultipartFile[] trainImages,
             @RequestParam(value = "valImages", required = false) MultipartFile[] valImages) {
+        logger.info("Received files - Train: {}, Val: {}",
+                (trainImages != null) ? trainImages.length : 0,
+                (valImages != null) ? valImages.length : 0);
 
         Map<String, String> response = new HashMap<>();
 
